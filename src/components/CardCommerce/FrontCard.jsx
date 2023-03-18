@@ -1,10 +1,16 @@
 import styled from "styled-components";
+import generateColor from "./COLORS";
 
-export default function FrontCard() {
+export default function FrontCard({ commerce }) {
+  const name = commerce.proprierty.split(" ")[0];
+  const commerceName = commerce.commerce + " " + commerce.subTitleCommerce;
+
+  const color = generateColor();
+
   return (
-    <Front>
-      <Title>Julie</Title>
-      <Subtitle>Beauty Salon</Subtitle>
+    <Front color={color}>
+      <Title>{name}</Title>
+      <Subtitle>{commerceName}</Subtitle>
     </Front>
   );
 }
@@ -17,14 +23,14 @@ const Front = styled.div`
 
   width: 100%;
   height: 100%;
-  background: linear-gradient(70deg, #f4d5d6 60%, rgb(255, 255, 255) 60%);
+  background: ${(props) => `linear-gradient(70deg, ${props.color} 60%, rgb(255, 255, 255) 60%)`};
 
   backface-visibility: hidden;
   position: absolute;
 `;
 
 const Title = styled.h1`
-  font-size: 62px;
+  font-size: 44px;
   font-family: "Roboto";
 `;
 
