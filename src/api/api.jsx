@@ -8,6 +8,13 @@ async function getCommerces() {
   return response.data;
 }
 
+async function updateCommerce(id, commerce) {
+  const response = await axios.put(`${URL}/commerces/${id}`, commerce);
+
+  return response.data;
+}
+
 export const api = {
   getCommerces,
+  updateCommerce,
 };

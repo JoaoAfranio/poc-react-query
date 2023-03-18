@@ -1,5 +1,7 @@
 import { useState } from "react";
+import { useMutation, useQueryClient } from "react-query";
 import styled from "styled-components";
+import { api } from "../../api/api";
 
 export default function Modal({ show, setShow, commerce }) {
   const [form, setForm] = useState({
@@ -14,10 +16,19 @@ export default function Modal({ show, setShow, commerce }) {
     link: commerce.link,
   });
 
+  const queryClient = useQueryClient();
+
   function handleInput(e) {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
   }
+
+  const { mutate, isLoading } = useMutation(() => api.updateCommerce(commerce.id, form), {
+    onSuccess: () => {
+      queryClient.invalidateQueries("list-commerce");
+      setShow(false);
+    },
+  });
 
   return (
     <ModalBackground>
@@ -69,7 +80,9 @@ export default function Modal({ show, setShow, commerce }) {
             >
               Cancel
             </button>
-            <button className="save">Save</button>
+            <button onClick={() => mutate()} className="save">
+              {isLoading ? "Loading..." : "Save"}
+            </button>
           </BoxButton>
         </Form>
       </Container>
